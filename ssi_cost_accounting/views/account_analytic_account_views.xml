@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+<menuitem
+        id="account_analytic_account_menu"
+        name="Accounts"
+        parent="menu_account_configuration"
+        sequence="2"
+        action="analytic.action_account_analytic_account_form"
+        groups="account_analytic_account_configurator_group"
+    />
+</odoo>
