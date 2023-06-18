@@ -6,4 +6,5 @@ from . import (
     res_company,
     res_config_settings,
     account_analytic_account,
+    account_analytic_group,
 )

@@ -11,6 +11,7 @@ class AccountAnalyticAccount(models.Model):
         "account.analytic.account",
         "mixin.date_duration",
     ]
+    _order = "group_id, id"
 
     # Mixin duration attribute
     _date_start_readonly = False
