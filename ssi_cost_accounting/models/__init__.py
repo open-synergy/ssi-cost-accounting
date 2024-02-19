@@ -9,4 +9,7 @@ from . import (
     res_config_settings,
     account_analytic_account,
     account_analytic_group,
+    account_account,
+    account_move,
+    account_move_line,
 )
