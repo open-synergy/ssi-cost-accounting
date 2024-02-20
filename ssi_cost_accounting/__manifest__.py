@@ -25,6 +25,7 @@
         "views/account_analytic_account_views.xml",
         "views/account_analytic_group_views.xml",
         "views/account_analytic_tag_views.xml",
+        "views/account_account_views.xml",
     ],
     "demo": [],
 }
