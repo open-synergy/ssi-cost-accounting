@@ -13,11 +13,14 @@
     "depends": [
         "ssi_financial_accounting",
         "ssi_duration_mixin",
+        "ssi_decorator",
     ],
     "data": [
         "security/ir_module_category_data.xml",
         "security/res_group_data.xml",
         "menu.xml",
+        "templates/analytic_account_m2o_configurator_templates.xml",
+        "templates/analytic_group_m2o_configurator_templates.xml",
         "views/res_config_settings_views.xml",
         "views/account_analytic_account_views.xml",
         "views/account_analytic_group_views.xml",
