@@ -12,6 +12,11 @@
             <field name="date_start" />
             <field name="date_end" />
         </field>
+        <xpath expr="//sheet" position="before">
+            <header>
+                <field name="state" widget="statusbar" options="{'clickable': '1'}" />
+            </header>
+        </xpath>
     </field>
 </record>
 
@@ -24,6 +29,9 @@
             <field name="date_start" />
             <field name="date_end" />
         </field>
+        <xpath expr="//field[last()]" position="after">
+            <field name="state" />
+        </xpath>
     </field>
 </record>
 
