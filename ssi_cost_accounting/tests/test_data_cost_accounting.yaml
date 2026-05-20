@@ -1,0 +1,112 @@
+scenarios:
+  - name: "Analytic Group - Create with default sequence"
+    steps:
+      - step: "Create analytic group"
+        action: "create"
+        model: "account.analytic.group"
+        save_as: "group"
+        values:
+          name: "Test Analytic Group CA"
+
+      - step: "Assert group name and default sequence"
+        action: "assert"
+        target: "group"
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Analytic Group CA"
+          sequence:
+            type: "value"
+            expected: 10
+
+  - name: "Analytic Group - Create with custom sequence"
+    steps:
+      - step: "Create analytic group with sequence 5"
+        action: "create"
+        model: "account.analytic.group"
+        save_as: "group"
+        values:
+          name: "Test Group Seq 5 CA"
+          sequence: 5
+
+      - step: "Assert custom sequence"
+        action: "assert"
+        target: "group"
+        asserts:
+          sequence:
+            type: "value"
+            expected: 5
+
+  - name: "Analytic Account - Create with default state"
+    steps:
+      - step: "Create analytic account"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "analytic_acc"
+        values:
+          name: "Test Analytic Account CA"
+
+      - step: "Assert default state is draft"
+        action: "assert"
+        target: "analytic_acc"
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Analytic Account CA"
+          state:
+            type: "value"
+            expected: "draft"
+
+  - name: "Analytic Account - Create with group"
+    steps:
+      - step: "Create analytic group"
+        action: "create"
+        model: "account.analytic.group"
+        save_as: "group"
+        values:
+          name: "Test Parent Group CA"
+          sequence: 20
+
+      - step: "Create analytic account in group"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "analytic_acc"
+        values:
+          name: "Test Analytic In Group CA"
+          group_id: "EVAL: registry['group'].id"
+
+      - step: "Assert account has group and draft state"
+        action: "assert"
+        target: "analytic_acc"
+        asserts:
+          group_id:
+            type: "value"
+            operator: "is_truthy"
+          state:
+            type: "value"
+            expected: "draft"
+
+  - name: "Analytic Account - With date range"
+    steps:
+      - step: "Create analytic account with dates"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "analytic_acc"
+        values:
+          name: "Test Analytic With Dates CA"
+          date_start: 2024-01-01
+          date_end: 2024-12-31
+
+      - step: "Assert date fields are set"
+        action: "assert"
+        target: "analytic_acc"
+        asserts:
+          date_start:
+            type: "value"
+            operator: "is_truthy"
+          date_end:
+            type: "value"
+            operator: "is_truthy"
+          state:
+            type: "value"
+            expected: "draft"

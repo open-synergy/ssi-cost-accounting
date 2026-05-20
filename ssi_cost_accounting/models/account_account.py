@@ -2,11 +2,11 @@
 # Copyright 2024 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models, fields, api
+from odoo import fields, models
 
 
 class AccountAccount(models.Model):
-    _inherit = 'account.account'
+    _inherit = "account.account"
 
     property_analytic_policy = fields.Selection(
         selection=[
@@ -36,6 +36,4 @@ class AccountAccount(models.Model):
     def _get_analytic_policy(self):
         """Extension point to obtain analytic policy for an account"""
         self.ensure_one()
-        return self.with_company(
-            self.company_id.id
-        ).property_analytic_policy
+        return self.with_company(self.company_id.id).property_analytic_policy

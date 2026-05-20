@@ -2,12 +2,11 @@
 # Copyright 2024 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models, fields, api, exceptions, _
-from odoo.exceptions import ValidationError
+from odoo import _, api, exceptions, models
 
 
 class AccountMoveLine(models.Model):
-    _inherit = 'account.move.line'
+    _inherit = "account.move.line"
 
     def _has_analytic_distribution(self):
         # If the move line has an analytic tag with distribution, the field
