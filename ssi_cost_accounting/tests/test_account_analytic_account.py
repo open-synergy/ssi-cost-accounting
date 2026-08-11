@@ -2,9 +2,9 @@
 # Copyright 2026 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo.tests import tagged
-
 from odoo_yaml_test import YamlTransactionCase
+
+from odoo.tests import tagged
 
 
 @tagged("post_install", "-at_install")
@@ -59,9 +59,7 @@ class TestAccountAnalyticAccount(YamlTransactionCase):
         results = (
             self.env["account.analytic.account"]
             .with_context(include_done_analytic_account=True)
-            .name_search(
-                name="Done AA Bypass", args=[], operator="ilike", limit=100
-            )
+            .name_search(name="Done AA Bypass", args=[], operator="ilike", limit=100)
         )
         found_ids = [result[0] for result in results]
 
