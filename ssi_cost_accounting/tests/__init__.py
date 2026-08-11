@@ -4,3 +4,4 @@
 
 from . import test_cost_accounting
 from . import test_analytic_policy
+from . import test_account_analytic_account
