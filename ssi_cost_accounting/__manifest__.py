@@ -14,6 +14,7 @@
         "ssi_financial_accounting",
         "ssi_duration_mixin",
         "ssi_decorator",
+        "account_analytic_parent",
     ],
     "data": [
         "security/ir_module_category_data.xml",

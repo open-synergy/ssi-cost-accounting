@@ -110,3 +110,63 @@ scenarios:
           state:
             type: "value"
             expected: "draft"
+
+  - name: "Analytic Account - Parent-child hierarchy coexists with SSI fields"
+    steps:
+      - step: "Create analytic group for hierarchy"
+        action: "create"
+        model: "account.analytic.group"
+        save_as: "hierarchy_group"
+        values:
+          name: "Test Hierarchy Group CA"
+
+      - step: "Create parent analytic account in the group"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "parent_acc"
+        values:
+          name: "Test Parent Analytic CA"
+          group_id: "REC: hierarchy_group.id"
+
+      - step: "Create child analytic account under the parent"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "child_acc"
+        values:
+          name: "Test Child Analytic CA"
+          parent_id: "REC: parent_acc.id"
+          group_id: "REC: hierarchy_group.id"
+
+      - step: "Assert child keeps OCA hierarchy and SSI defaults"
+        action: "assert"
+        target: "child_acc"
+        asserts:
+          parent_id:
+            type: "m2o"
+            expected: "REC: parent_acc"
+          complete_name:
+            type: "value"
+            expected: "Test Parent Analytic CA / Test Child Analytic CA"
+          state:
+            type: "value"
+            expected: "draft"
+          group_id:
+            type: "m2o"
+            expected: "REC: hierarchy_group"
+
+  - name: "Analytic Account - Self-parenting is rejected"
+    steps:
+      - step: "Create analytic account for the recursion check"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "self_acc"
+        values:
+          name: "Test Self Parent CA"
+
+      - step: "Writing parent_id to itself must raise UserError"
+        action: "write"
+        target: "self_acc"
+        expect_error:
+          type: "UserError"
+        values:
+          parent_id: "REC: self_acc.id"
