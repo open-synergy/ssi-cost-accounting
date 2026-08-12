@@ -18,7 +18,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[ssi_cost_accounting](ssi_cost_accounting/) | 14.0.2.4.1 |  | Cost Accounting
+[ssi_cost_accounting](ssi_cost_accounting/) | 14.0.2.4.2 |  | Cost Accounting
 
 [//]: # (end addons)
 

@@ -4,7 +4,7 @@
 
 {
     "name": "Cost Accounting",
-    "version": "14.0.2.4.1",
+    "version": "14.0.2.4.2",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "AGPL-3",
