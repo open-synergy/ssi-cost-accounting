@@ -6,6 +6,14 @@ from odoo import fields, models
 
 
 class AccountAccount(models.Model):
+    """
+    Adds an analytic account policy to ``account.account``.
+
+    The policy controls whether an analytic account is optional,
+    always required, required only on posted moves, or forbidden
+    on account move lines that use this account.
+    """
+
     _inherit = "account.account"
 
     property_analytic_policy = fields.Selection(
@@ -34,6 +42,12 @@ class AccountAccount(models.Model):
     )
 
     def _get_analytic_policy(self):
-        """Extension point to obtain analytic policy for an account"""
+        """Return the analytic account policy configured on this account.
+
+        Extension point: override to compute the policy from a
+        source other than ``property_analytic_policy``.
+
+        :return: one of ``optional``, ``always``, ``posted``, ``never``
+        """
         self.ensure_one()
         return self.with_company(self.company_id.id).property_analytic_policy

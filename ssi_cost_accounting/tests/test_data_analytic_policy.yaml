@@ -1,0 +1,723 @@
+scenarios:
+  - name: "Optional policy - no analytic account - create succeeds"
+    steps:
+      - step: "Create optional-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc1"
+        values:
+          name: "Optional Account 1"
+          code: "CA9911"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc1"
+        values:
+          name: "Counterpart Account 1"
+          code: "CC9911"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal1"
+        values:
+          name: "Test Journal 1"
+          code: "TJ911"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create move without analytic account"
+        action: "create"
+        model: "account.move"
+        save_as: "move1"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal1.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc1.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc1.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+      - step: "Assert move created in draft"
+        action: "assert"
+        target: "move1"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          state:
+            type: "value"
+            expected: "draft"
+
+  - name: "Optional policy - no analytic account - post succeeds"
+    steps:
+      - step: "Create optional-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc2"
+        values:
+          name: "Optional Account 2"
+          code: "CA9912"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc2"
+        values:
+          name: "Counterpart Account 2"
+          code: "CC9912"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal2"
+        values:
+          name: "Test Journal 2"
+          code: "TJ912"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create move without analytic account"
+        action: "create"
+        model: "account.move"
+        save_as: "move2"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal2.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc2.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc2.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+      - step: "Post the move"
+        action: "call"
+        target: "move2"
+        method: "action_post"
+
+      - step: "Assert move is posted"
+        action: "assert"
+        target: "move2"
+        asserts:
+          state:
+            type: "value"
+            expected: "posted"
+
+  - name: "Always policy - with analytic account - create succeeds"
+    steps:
+      - step: "Create always-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc3"
+        values:
+          name: "Always Account 3"
+          code: "CA9913"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+          property_analytic_policy: "always"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc3"
+        values:
+          name: "Counterpart Account 3"
+          code: "CC9913"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal3"
+        values:
+          name: "Test Journal 3"
+          code: "TJ913"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create analytic account"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "analytic3"
+        values:
+          name: "Test Analytic 3"
+
+      - step: "Create move with analytic account"
+        action: "create"
+        model: "account.move"
+        save_as: "move3"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal3.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc3.id"
+                analytic_account_id: "REC: analytic3.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc3.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+      - step: "Assert move created"
+        action: "assert"
+        target: "move3"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+
+  - name: "Always policy - with analytic account - post succeeds"
+    steps:
+      - step: "Create always-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc4"
+        values:
+          name: "Always Account 4"
+          code: "CA9914"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+          property_analytic_policy: "always"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc4"
+        values:
+          name: "Counterpart Account 4"
+          code: "CC9914"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal4"
+        values:
+          name: "Test Journal 4"
+          code: "TJ914"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create analytic account"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "analytic4"
+        values:
+          name: "Test Analytic 4"
+
+      - step: "Create move with analytic account"
+        action: "create"
+        model: "account.move"
+        save_as: "move4"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal4.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc4.id"
+                analytic_account_id: "REC: analytic4.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc4.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+      - step: "Post the move"
+        action: "call"
+        target: "move4"
+        method: "action_post"
+
+      - step: "Assert move is posted"
+        action: "assert"
+        target: "move4"
+        asserts:
+          state:
+            type: "value"
+            expected: "posted"
+
+  - name: "Always policy - no analytic account - create raises ValidationError"
+    steps:
+      - step: "Create always-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc5"
+        values:
+          name: "Always Account 5"
+          code: "CA9915"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+          property_analytic_policy: "always"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc5"
+        values:
+          name: "Counterpart Account 5"
+          code: "CC9915"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal5"
+        values:
+          name: "Test Journal 5"
+          code: "TJ915"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create move without analytic account must raise"
+        action: "create"
+        model: "account.move"
+        expect_error:
+          type: "ValidationError"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal5.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc5.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc5.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+  - name: "Never policy - no analytic account - create succeeds"
+    steps:
+      - step: "Create never-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc6"
+        values:
+          name: "Never Account 6"
+          code: "CA9916"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+          property_analytic_policy: "never"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc6"
+        values:
+          name: "Counterpart Account 6"
+          code: "CC9916"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal6"
+        values:
+          name: "Test Journal 6"
+          code: "TJ916"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create move without analytic account"
+        action: "create"
+        model: "account.move"
+        save_as: "move6"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal6.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc6.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc6.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+      - step: "Assert move created"
+        action: "assert"
+        target: "move6"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+
+  - name: "Never policy - no analytic account - post succeeds"
+    steps:
+      - step: "Create never-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc7"
+        values:
+          name: "Never Account 7"
+          code: "CA9917"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+          property_analytic_policy: "never"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc7"
+        values:
+          name: "Counterpart Account 7"
+          code: "CC9917"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal7"
+        values:
+          name: "Test Journal 7"
+          code: "TJ917"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create move without analytic account"
+        action: "create"
+        model: "account.move"
+        save_as: "move7"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal7.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc7.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc7.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+      - step: "Post the move"
+        action: "call"
+        target: "move7"
+        method: "action_post"
+
+      - step: "Assert move is posted"
+        action: "assert"
+        target: "move7"
+        asserts:
+          state:
+            type: "value"
+            expected: "posted"
+
+  - name: "Never policy - with analytic account - create raises ValidationError"
+    steps:
+      - step: "Create never-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc8"
+        values:
+          name: "Never Account 8"
+          code: "CA9918"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+          property_analytic_policy: "never"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc8"
+        values:
+          name: "Counterpart Account 8"
+          code: "CC9918"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal8"
+        values:
+          name: "Test Journal 8"
+          code: "TJ918"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create analytic account"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "analytic8"
+        values:
+          name: "Test Analytic 8"
+
+      - step: "Create move with analytic account must raise"
+        action: "create"
+        model: "account.move"
+        expect_error:
+          type: "ValidationError"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal8.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc8.id"
+                analytic_account_id: "REC: analytic8.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc8.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+  - name: "Posted policy - draft, no analytic account - create succeeds"
+    steps:
+      - step: "Create posted-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc9"
+        values:
+          name: "Posted Account 9"
+          code: "CA9919"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+          property_analytic_policy: "posted"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc9"
+        values:
+          name: "Counterpart Account 9"
+          code: "CC9919"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal9"
+        values:
+          name: "Test Journal 9"
+          code: "TJ919"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create draft move without analytic account"
+        action: "create"
+        model: "account.move"
+        save_as: "move9"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal9.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc9.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc9.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+      - step: "Assert move created and still draft"
+        action: "assert"
+        target: "move9"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          state:
+            type: "value"
+            expected: "draft"
+
+  - name: "Posted policy - post with no analytic account raises ValidationError"
+    steps:
+      - step: "Create posted-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc10"
+        values:
+          name: "Posted Account 10"
+          code: "CA9920"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+          property_analytic_policy: "posted"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc10"
+        values:
+          name: "Counterpart Account 10"
+          code: "CC9920"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal10"
+        values:
+          name: "Test Journal 10"
+          code: "TJ920"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create draft move without analytic account"
+        action: "create"
+        model: "account.move"
+        save_as: "move10"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal10.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc10.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc10.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+      - step: "Posting without analytic account must raise"
+        action: "call"
+        target: "move10"
+        method: "action_post"
+        expect_error:
+          type: "ValidationError"
+
+  - name: "Posted policy - with analytic account - post succeeds"
+    steps:
+      - step: "Create posted-policy account"
+        action: "create"
+        model: "account.account"
+        save_as: "acc11"
+        values:
+          name: "Posted Account 11"
+          code: "CA9921"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+          property_analytic_policy: "posted"
+
+      - step: "Create counterpart account"
+        action: "create"
+        model: "account.account"
+        save_as: "cc11"
+        values:
+          name: "Counterpart Account 11"
+          code: "CC9921"
+          user_type_id: "account.data_account_type_expenses"
+          company_id: "REC: company.id"
+
+      - step: "Create general journal"
+        action: "create"
+        model: "account.journal"
+        save_as: "journal11"
+        values:
+          name: "Test Journal 11"
+          code: "TJ921"
+          type: "general"
+          company_id: "REC: company.id"
+
+      - step: "Create analytic account"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "analytic11"
+        values:
+          name: "Test Analytic 11"
+
+      - step: "Create move with analytic account"
+        action: "create"
+        model: "account.move"
+        save_as: "move11"
+        values:
+          move_type: "entry"
+          journal_id: "REC: journal11.id"
+          line_ids:
+            - - 0
+              - 0
+              - account_id: "REC: acc11.id"
+                analytic_account_id: "REC: analytic11.id"
+                debit: 100.0
+                credit: 0.0
+                name: "Main line"
+            - - 0
+              - 0
+              - account_id: "REC: cc11.id"
+                debit: 0.0
+                credit: 100.0
+                name: "Counterpart line"
+
+      - step: "Post the move"
+        action: "call"
+        target: "move11"
+        method: "action_post"
+
+      - step: "Assert move is posted"
+        action: "assert"
+        target: "move11"
+        asserts:
+          state:
+            type: "value"
+            expected: "posted"

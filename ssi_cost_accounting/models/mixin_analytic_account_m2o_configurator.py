@@ -7,7 +7,16 @@ from odoo import fields, models
 from odoo.addons.ssi_decorator import ssi_decorator
 
 
-class MixinAnalyticAccountM2OConfigurator(models.AbstractModel):
+class MixinAnalyticAccountM2oConfigurator(models.AbstractModel):
+    """
+    Reusable Many2one configurator mixin for analytic accounts.
+
+    Lets a transactional model restrict the analytic accounts a
+    user may pick — via manual selection, a search domain, or a
+    Python code snippet — and injects the configuration fields into
+    the model's form view.
+    """
+
     _name = "mixin.analytic_account_m2o_configurator"
     _inherit = [
         "mixin.decorator",
@@ -37,6 +46,15 @@ class MixinAnalyticAccountM2OConfigurator(models.AbstractModel):
 
     @ssi_decorator.insert_on_form_view()
     def _analytic_account_m2o_configurator_insert_form_element(self, view_arch):
+        """Insert the analytic account configurator fields into the form.
+
+        Runs on every model mixing this in, controlled by
+        ``_analytic_account_m2o_configurator_insert_form_element_ok``
+        and ``_analytic_account_m2o_configurator_form_xpath``.
+
+        :param view_arch: the form view architecture being built
+        :return: the (possibly modified) view architecture
+        """
         # TODO
         template_xml = "ssi_cost_accounting."
         template_xml += "analytic_account_m2o_configurator_template"

@@ -3,9 +3,22 @@
      Copyright 2022 PT. Simetri Sinergi Indonesia
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
+<!--
+    Each configurator group below implies `analytic.group_analytic_accounting`.
+    Without it, `ir.ui.menu._visible_menu_ids()` hides the Accounts/Groups/Tags
+    menu for members regardless of this group: Odoo checks 'read' access on
+    the menu action's res_model in addition to the menu's own `groups`
+    attribute, and `account.analytic.group`/`account.analytic.tag` (and, for
+    users without `account.group_account_user`, `account.analytic.account`
+    too) grant that access only through `analytic.group_analytic_accounting`
+    (see `analytic/security/ir.model.access.csv`). Membership in a
+    configurator group alone would leave the menu it is meant to unlock
+    invisible without this implied group.
+-->
 <record id="account_analytic_account_configurator_group" model="res.groups">
     <field name="name">Analytic Account</field>
     <field name="category_id" ref="cost_accounting_configurator_module_category" />
+    <field name="implied_ids" eval="[(4, ref('analytic.group_analytic_accounting'))]" />
     <field
             name="users"
             eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"
@@ -15,6 +28,7 @@
 <record id="account_analytic_group_configurator_group" model="res.groups">
     <field name="name">Analytic Account Group</field>
     <field name="category_id" ref="cost_accounting_configurator_module_category" />
+    <field name="implied_ids" eval="[(4, ref('analytic.group_analytic_accounting'))]" />
     <field
             name="users"
             eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"
@@ -24,6 +38,7 @@
 <record id="account_analytic_tag_configurator_group" model="res.groups">
     <field name="name">Analytic Tag</field>
     <field name="category_id" ref="cost_accounting_configurator_module_category" />
+    <field name="implied_ids" eval="[(4, ref('analytic.group_analytic_accounting'))]" />
     <field
             name="users"
             eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"
