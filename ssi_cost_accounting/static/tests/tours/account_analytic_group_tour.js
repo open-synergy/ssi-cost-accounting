@@ -33,9 +33,15 @@ odoo.define("ssi_cost_accounting.account_analytic_group_tour", function (require
             },
             {
                 // Gerbang: tunggu action TUJUAN benar-benar terpasang.
+                //
+                // The breadcrumb shows the ACTION's name, not the menu's.
+                // `analytic.account_analytic_group_action` (core `analytic`
+                // module) is named "Analytic Account Groups" — it does NOT
+                // contain the substring "Analytic Group" ("Analytic" is
+                // followed by " Account Groups", not " Group").
                 content: "Analytic Groups list is displayed",
                 trigger:
-                    ".o_control_panel .breadcrumb-item.active:contains(Analytic Group)",
+                    ".o_control_panel .breadcrumb-item.active:contains(Analytic Account Groups)",
                 extra_trigger: ".o_list_view",
                 run: function () {
                     // Assertion only.
