@@ -51,10 +51,17 @@ odoo.define("ssi_cost_accounting.account_account_tour", function (require) {
             },
 
             // ── Additional Fields — Analytic Policy field is displayed
+            //
+            // account.view_account_list is `<tree editable="top">` (core
+            // `account` module) — clicking a data cell switches the row
+            // into INLINE edit mode (class `o_selected_row`, set by
+            // `list_editable_renderer.js`), it does NOT navigate to a
+            // separate `.o_form_view` page. Gate on `.o_selected_row`,
+            // not `.o_form_view`.
             {
                 content: "Analytic Policy field is displayed",
                 trigger: ".o_field_widget[name='property_analytic_policy']",
-                extra_trigger: ".o_form_view",
+                extra_trigger: ".o_selected_row",
                 run: function () {
                     // Assertion only — this delta tour only proves the
                     // field is rendered, per the E1 pattern. It does not
