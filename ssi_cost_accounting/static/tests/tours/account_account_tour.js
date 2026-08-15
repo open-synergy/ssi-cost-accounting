@@ -45,7 +45,8 @@ odoo.define("ssi_cost_accounting.account_account_tour", function (require) {
             // ── Flow 2 — Find and open the record to edit
             {
                 content: "Open the test account",
-                trigger: '.o_list_view .o_data_row:contains("CATOUR01")',
+                trigger:
+                    '.o_list_view .o_data_row:contains("CATOUR01") .o_data_cell:first',
                 extra_trigger: ".o_list_view",
             },
 
