@@ -19,6 +19,15 @@ To install this module, you need to:
 5.  Search For *Cost Accounting*
 6.  Install the module
 
+Work Instruction
+================
+
+* `Edit Account <docs/account_account/02-edit.html>`_
+* `Create Analytic Account <docs/account_analytic_account/01-create.html>`_
+* `Create Analytic Account Group <docs/account_analytic_group/01-create.html>`_
+* `Access Analytic Tags <docs/account_analytic_tag/01-access.html>`_
+* `Enable Cost Accounting Settings <docs/res_config_settings/01-enable-cost-accounting.html>`_
+
 Bug Tracker
 ===========
 

@@ -15,6 +15,7 @@
         "ssi_duration_mixin",
         "ssi_decorator",
         "account_analytic_parent",
+        "web_tour",
     ],
     "data": [
         "security/ir_module_category_data.xml",
@@ -27,6 +28,7 @@
         "views/account_analytic_group_views.xml",
         "views/account_analytic_tag_views.xml",
         "views/account_account_views.xml",
+        "views/assets.xml",
     ],
     "demo": [],
 }

@@ -20,13 +20,13 @@
         id="menu_cost_accounting_report"
         name="Report"
         parent="menu_root_cost_accounting"
-        sequence="98"
+        sequence="998"
     />
 <menuitem
         id="menu_cost_accounting_configuration"
         name="Configuration"
         parent="menu_root_cost_accounting"
-        sequence="99"
+        sequence="999"
     />
 
 <menuitem

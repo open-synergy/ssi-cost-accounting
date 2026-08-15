@@ -9,5 +9,8 @@ from odoo.tests import tagged
 
 @tagged("post_install", "-at_install")
 class TestCostAccounting(YamlTransactionCase):
+    """Scenario tests for ``account.analytic.group``/``.account`` CRUD."""
+
     def test_cost_accounting(self):
+        """Run the analytic group/account CRUD scenario."""
         self.run_yaml_scenario("test_data_cost_accounting.yaml")

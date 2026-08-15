@@ -6,6 +6,13 @@ from odoo import fields, models
 
 
 class ResConfigSettings(models.TransientModel):
+    """
+    Exposes cost accounting module installers in Settings.
+
+    Lets administrators enable the optional Financial Budget and
+    Analytic Budget modules from the general Settings screen.
+    """
+
     _name = "res.config.settings"
     _inherit = [
         "res.config.settings",
