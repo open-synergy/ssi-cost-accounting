@@ -1,0 +1,159 @@
+scenarios:
+  - name: "Three-level hierarchy balance"
+    steps:
+      - step: "Create parent account P"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_p"
+        values:
+          name: "Parent P"
+      - step: "Create child account C1"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_c1"
+        values:
+          name: "Child C1"
+          parent_id: "REC: account_p.id"
+      - step: "Create child account C2"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_c2"
+        values:
+          name: "Child C2"
+          parent_id: "REC: account_p.id"
+      - step: "Create grandchild account G1"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_g1"
+        values:
+          name: "Grandchild G1"
+          parent_id: "REC: account_c1.id"
+      - step: "Post an analytic line on P"
+        action: "create"
+        model: "account.analytic.line"
+        save_as: "line_p"
+        values:
+          name: "Line P"
+          account_id: "REC: account_p.id"
+          amount: 100.0
+      - step: "Post an analytic line on C1"
+        action: "create"
+        model: "account.analytic.line"
+        save_as: "line_c1"
+        values:
+          name: "Line C1"
+          account_id: "REC: account_c1.id"
+          amount: 200.0
+      - step: "Post an analytic line on C2"
+        action: "create"
+        model: "account.analytic.line"
+        save_as: "line_c2"
+        values:
+          name: "Line C2"
+          account_id: "REC: account_c2.id"
+          amount: -50.0
+      - step: "Post an analytic line on G1"
+        action: "create"
+        model: "account.analytic.line"
+        save_as: "line_g1"
+        values:
+          name: "Line G1"
+          account_id: "REC: account_g1.id"
+          amount: 30.0
+      - step: "Assert G1 balances"
+        action: "assert"
+        target: "account_g1"
+        asserts:
+          child_balance:
+            type: "value"
+            expected: 0.0
+          total_balance:
+            type: "value"
+            expected: 30.0
+      - step: "Assert C1 balances"
+        action: "assert"
+        target: "account_c1"
+        asserts:
+          child_balance:
+            type: "value"
+            expected: 30.0
+          total_balance:
+            type: "value"
+            expected: 230.0
+      - step: "Assert C2 balances"
+        action: "assert"
+        target: "account_c2"
+        asserts:
+          child_balance:
+            type: "value"
+            expected: 0.0
+          total_balance:
+            type: "value"
+            expected: -50.0
+      - step: "Assert P balances"
+        action: "assert"
+        target: "account_p"
+        asserts:
+          child_balance:
+            type: "value"
+            expected: 180.0
+          total_balance:
+            type: "value"
+            expected: 280.0
+
+  - name: "Leaf account without analytic lines"
+    steps:
+      - step: "Create a leaf account with no lines"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_leaf"
+        values:
+          name: "Leaf Without Lines"
+      - step: "Assert leaf balances are zero"
+        action: "assert"
+        target: "account_leaf"
+        asserts:
+          child_balance:
+            type: "value"
+            expected: 0.0
+          total_balance:
+            type: "value"
+            expected: 0.0
+
+  - name: "Leaf account with its own lines, no children"
+    steps:
+      - step: "Create a leaf account"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_leaf"
+        values:
+          name: "Leaf With Lines"
+      - step: "Post a positive analytic line"
+        action: "create"
+        model: "account.analytic.line"
+        save_as: "line_positive"
+        values:
+          name: "Positive Line"
+          account_id: "REC: account_leaf.id"
+          amount: 70.0
+      - step: "Post a negative analytic line"
+        action: "create"
+        model: "account.analytic.line"
+        save_as: "line_negative"
+        values:
+          name: "Negative Line"
+          account_id: "REC: account_leaf.id"
+          amount: -20.0
+      - step: "Assert leaf balances match core balance"
+        action: "assert"
+        target: "account_leaf"
+        asserts:
+          child_balance:
+            type: "value"
+            expected: 0.0
+          total_balance:
+            type: "value"
+            expected: 50.0
+          balance:
+            type: "value"
+            expected: 50.0

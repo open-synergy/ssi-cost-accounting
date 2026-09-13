@@ -24,6 +24,15 @@ after the **Partner** field:
   status bar is clickable, the user can change it directly from the form without a
   dedicated confirm/approve button.
 
+On the form, a new **Hierarchy Balance** group appears after the core **main** group
+with two read-only fields (also shown on the list, after the core **Balance** column):
+
+- **Child Accounts Balance**: The sum of the amount of every analytic line posted on all
+  descendant analytic accounts, excluding this account's own lines. Read-only,
+  automatically computed.
+- **Total Balance**: The sum of the amount of every analytic line posted on this account
+  and all its descendant analytic accounts. Read-only, automatically computed.
+
 ## Additional Post-Condition
 
 - Once **State** is set to **Close**, the analytic account no longer appears in the

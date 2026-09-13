@@ -17,6 +17,12 @@
                 <field name="state" widget="statusbar" options="{'clickable': '1'}" />
             </header>
         </xpath>
+        <xpath expr="//group[@name='main']" position="after">
+            <group name="hierarchy_balance" string="Hierarchy Balance">
+                <field name="child_balance" />
+                <field name="total_balance" />
+            </group>
+        </xpath>
     </field>
 </record>
 
@@ -29,6 +35,10 @@
             <field name="date_start" />
             <field name="date_end" />
         </field>
+        <xpath expr="//field[@name='balance']" position="after">
+            <field name="child_balance" />
+            <field name="total_balance" />
+        </xpath>
         <xpath expr="//field[last()]" position="after">
             <field name="state" />
         </xpath>

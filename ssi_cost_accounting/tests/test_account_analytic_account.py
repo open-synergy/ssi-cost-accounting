@@ -85,3 +85,7 @@ class TestAccountAnalyticAccount(YamlTransactionCase):
         )
 
         self.assertIn(done_account, found)
+
+    def test_hierarchy_balance(self):
+        """Run the YAML scenarios for ``child_balance``/``total_balance``."""
+        self.run_yaml_scenario("test_data_account_analytic_account_balance.yaml")
