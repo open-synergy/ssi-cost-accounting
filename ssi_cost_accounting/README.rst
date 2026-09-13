@@ -24,8 +24,14 @@ Work Instruction
 
 * `Edit Account <docs/account_account/02-edit.html>`_
 * `Create Analytic Account <docs/account_analytic_account/01-create.html>`_
+* `Edit Analytic Account <docs/account_analytic_account/02-edit.html>`_
+* `Delete Analytic Account <docs/account_analytic_account/03-delete.html>`_
 * `Create Analytic Account Group <docs/account_analytic_group/01-create.html>`_
-* `Access Analytic Tags <docs/account_analytic_tag/01-access.html>`_
+* `Edit Analytic Account Group <docs/account_analytic_group/02-edit.html>`_
+* `Delete Analytic Account Group <docs/account_analytic_group/03-delete.html>`_
+* `Create Analytic Tag <docs/account_analytic_tag/01-create.html>`_
+* `Edit Analytic Tag <docs/account_analytic_tag/02-edit.html>`_
+* `Delete Analytic Tag <docs/account_analytic_tag/03-delete.html>`_
 * `Enable Cost Accounting Settings <docs/res_config_settings/01-enable-cost-accounting.html>`_
 
 Bug Tracker

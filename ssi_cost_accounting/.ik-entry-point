@@ -1,0 +1,8 @@
+# Titik masuk IK untuk model milik Odoo core/OCA yang di-inherit modul ini.
+# Format: <model.bertitik> -- <alasan satu baris>
+# Lihat skill odoo-development-instruksi-kerja, references/modul-extension.md
+# §"Model milik Odoo core / OCA — deklarasi titik masuk".
+
+account.analytic.account -- ssi_cost_accounting menyediakan menu Cost Accounting > Configuration > Account > Accounts dan group configurator Analytic Account sebagai pintu masuk pengguna untuk model core ini
+account.analytic.group -- ssi_cost_accounting menyediakan menu Cost Accounting > Configuration > Account > Groups dan group configurator Analytic Account Group sebagai pintu masuk pengguna untuk model core/OCA ini
+account.analytic.tag -- ssi_cost_accounting menyediakan menu Cost Accounting > Configuration > Account > Tags dan group configurator Analytic Tag sebagai pintu masuk pengguna untuk model core ini

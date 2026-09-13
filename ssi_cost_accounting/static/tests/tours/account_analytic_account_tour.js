@@ -57,7 +57,15 @@ odoo.define("ssi_cost_accounting.account_analytic_account_tour", function (requi
                 },
             },
 
-            // ── Additional Fields — Start Date / End Date are displayed
+            // ── Flow 3 — Fill in the required Name field
+            {
+                content: "Fill in Name",
+                trigger: ".o_field_widget[name='name']",
+                extra_trigger: ".o_form_view.o_form_editable",
+                run: "text Tour Test Analytic Account",
+            },
+
+            // ── Flow 4 — Start Date / End Date fields are displayed
             {
                 content: "Start Date field is displayed",
                 trigger: ".o_field_widget[name='date_start']",
@@ -73,15 +81,42 @@ odoo.define("ssi_cost_accounting.account_analytic_account_tour", function (requi
                 },
             },
 
-            // ── Additional Fields — State status bar defaults to Draft
+            // ── Flow 4 — State status bar defaults to Draft
             {
                 content: "State status bar shows Draft",
                 trigger:
                     ".o_statusbar_status .o_arrow_button[data-value='draft'].btn-primary",
                 run: function () {
-                    // Assertion only — this delta tour only proves the
-                    // additional fields are rendered, per the E1 pattern.
-                    // It does not continue into save/state-change flow.
+                    // Assertion only.
+                },
+            },
+
+            // ── Flow 5 — Hierarchy Balance fields are displayed, read-only
+            {
+                content: "Child Accounts Balance field is displayed",
+                trigger: ".o_field_widget[name='child_balance']",
+                run: function () {
+                    // Assertion only.
+                },
+            },
+            {
+                content: "Total Balance field is displayed",
+                trigger: ".o_field_widget[name='total_balance']",
+                run: function () {
+                    // Assertion only.
+                },
+            },
+
+            // ── Flow 6 — Click Save
+            {
+                content: "Save the record",
+                trigger: ".o_form_button_save",
+            },
+            {
+                content: "Record is saved",
+                trigger: ".o_form_view.o_form_readonly",
+                run: function () {
+                    // Assertion only.
                 },
             },
         ]
