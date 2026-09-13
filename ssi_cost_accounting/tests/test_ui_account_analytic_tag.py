@@ -11,7 +11,7 @@ class TestUiAccountAnalyticTag(HttpSavepointCase):
 
     @classmethod
     def setUpClass(cls):
-        """Prepare the admin session for the access tour.
+        """Prepare the admin session for the create tour.
 
         No extra fixture is required: the *Analytic Tag* configurator
         group is granted to ``base.user_admin`` by this module's own
@@ -19,11 +19,13 @@ class TestUiAccountAnalyticTag(HttpSavepointCase):
         """
         super().setUpClass()
 
-    def test_access(self):
-        """Run the access tour for ``account.analytic.tag``.
+    def test_create(self):
+        """Run the create tour for ``account.analytic.tag``.
 
-        IK: docs/account_analytic_tag/01-access.md
+        IK: docs/account_analytic_tag/01-create.md
         """
         self.start_tour(
-            "/web", "ssi_cost_accounting_account_analytic_tag_access", login="admin"
+            "/web",
+            "ssi_cost_accounting_account_analytic_tag_create",
+            login="admin",
         )

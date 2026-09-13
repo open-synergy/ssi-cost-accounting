@@ -3,9 +3,9 @@ odoo.define("ssi_cost_accounting.account_analytic_tag_tour", function (require) 
 
     var tour = require("web_tour.tour");
 
-    // IK: docs/account_analytic_tag/01-access.md
+    // IK: docs/account_analytic_tag/01-create.md
     tour.register(
-        "ssi_cost_accounting_account_analytic_tag_access",
+        "ssi_cost_accounting_account_analytic_tag_create",
         {
             test: true,
             url: "/web",
@@ -31,12 +31,59 @@ odoo.define("ssi_cost_accounting.account_analytic_tag_tour", function (require) 
                 trigger:
                     '.o_menu_sections [data-menu-xmlid="ssi_cost_accounting.account_analytic_tag_menu"]',
             },
-
-            // ── Post-Condition — the Analytic Tags list view is displayed
             {
+                // Gerbang: tunggu action TUJUAN benar-benar terpasang.
                 content: "Analytic Tags list is displayed",
                 trigger: ".o_control_panel .breadcrumb-item.active:contains(Tag)",
                 extra_trigger: ".o_list_view",
+                run: function () {
+                    // Assertion only.
+                },
+            },
+
+            // ── Flow 2 — Click the New button
+            {
+                content: "Click Create",
+                trigger: ".o_list_button_add",
+                extra_trigger: ".o_list_view",
+            },
+            {
+                content: "Form is open in edit mode",
+                trigger: ".o_form_view.o_form_editable",
+                run: function () {
+                    // Assertion only; do not trigger the default click
+                    // action.
+                },
+            },
+
+            // ── Flow 3 — Fill in the required Analytic Tag field
+            {
+                content: "Fill in Analytic Tag",
+                trigger: ".o_field_widget[name='name']",
+                extra_trigger: ".o_form_view.o_form_editable",
+                run: "text Tour Test Analytic Tag",
+            },
+
+            // ── Flow 3 — Analytic Distribution checkbox is displayed
+            {
+                content: "Analytic Distribution field is displayed",
+                trigger: ".o_field_widget[name='active_analytic_distribution']",
+                run: function () {
+                    // Assertion only. Checking it and exercising the
+                    // resulting one2many table is left untested here —
+                    // per odoo-development-ui-test, a tour only proves
+                    // the interface is usable, not every value/branch.
+                },
+            },
+
+            // ── Flow 5 — Click Save
+            {
+                content: "Save the record",
+                trigger: ".o_form_button_save",
+            },
+            {
+                content: "Record is saved",
+                trigger: ".o_form_view.o_form_readonly",
                 run: function () {
                     // Assertion only.
                 },

@@ -63,14 +63,33 @@ odoo.define("ssi_cost_accounting.account_analytic_group_tour", function (require
                 },
             },
 
-            // ── Additional Fields — Sequence field is displayed
+            // ── Flow 3 — Fill in the required Name field
+            {
+                content: "Fill in Name",
+                trigger: ".o_field_widget[name='name']",
+                extra_trigger: ".o_form_view.o_form_editable",
+                run: "text Tour Test Analytic Group",
+            },
+
+            // ── Flow 3 — Sequence field is displayed
             {
                 content: "Sequence field is displayed",
                 trigger: ".o_field_widget[name='sequence']",
                 run: function () {
-                    // Assertion only — this delta tour only proves the
-                    // additional field is rendered, per the E1 pattern.
-                    // It does not continue into save flow.
+                    // Assertion only.
+                },
+            },
+
+            // ── Flow 4 — Click Save
+            {
+                content: "Save the record",
+                trigger: ".o_form_button_save",
+            },
+            {
+                content: "Record is saved",
+                trigger: ".o_form_view.o_form_readonly",
+                run: function () {
+                    // Assertion only.
                 },
             },
         ]

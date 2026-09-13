@@ -1,22 +1,30 @@
 # Create Analytic Account Group
 
-> **Module:** ssi_cost_accounting
->
-> **Extends:** Odoo core/OCA (`analytic` / `account_analytic_parent`) — model
-> `account.analytic.group`, action `01-create`
+> **Module:** `ssi_cost_accounting`\
+> **Model:** `account.analytic.group`\
+> **Menu:** Cost Accounting > Configuration > Account > Groups\
+> **Actor:** user in group _Analytic Account Group_
 
-## Additional Pre-Condition
+## Pre-Condition
 
-- **Access:** The user is a member of the **Analytic Account Group** group
-  (`ssi_cost_accounting.account_analytic_group_configurator_group`) — this is the group
-  guarding the **Cost Accounting > Account > Groups** menu used to reach the create
-  form.
+- **Access:** User is in group _Analytic Account Group_
+  (`ssi_cost_accounting.account_analytic_group_configurator_group`).
 
-## Additional Fields
+## Flow
 
-When this module is installed, the create form gains one field, shown after the
-**Parent** field:
+1. Open the **Cost Accounting > Configuration > Account > Groups** menu.
+2. Click the **New** button. **(14.0: "Create")**
+3. Fill in the fields:
+   - **Name** _(required)_: enter a name for the analytic account group.
+   - **Parent**: nest this group under another analytic account group to build a
+     hierarchy. Optional.
+   - **Sequence**: determines the display order of analytic groups relative to each
+     other. Defaults to **10**. Can also be reordered directly from the list using the
+     drag handle in front of each row, without opening the record.
+   - **Description**: free text describing the group. Optional.
+4. Click **Save**.
 
-- **Sequence**: Determines the display order of analytic groups relative to each other.
-  Defaults to **10**. Editable on the form; can also be reordered directly from the list
-  using the drag handle in front of each row (no need to open the record).
+## Post-Condition
+
+- A new record is created and appears in the Analytic Account Groups list, ordered
+  according to its **Sequence**.

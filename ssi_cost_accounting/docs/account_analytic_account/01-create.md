@@ -1,42 +1,40 @@
 # Create Analytic Account
 
-> **Module:** ssi_cost_accounting
->
-> **Extends:** Odoo core (`analytic` module) — model `account.analytic.account`, action
-> `01-create`
+> **Module:** `ssi_cost_accounting`\
+> **Model:** `account.analytic.account`\
+> **Menu:** Cost Accounting > Configuration > Account > Accounts\
+> **Actor:** user in group _Analytic Account_\
+> **State:** `—` → `draft`
 
-## Additional Pre-Condition
+## Pre-Condition
 
-- **Access:** The user is a member of the **Analytic Account** group
-  (`ssi_cost_accounting.account_analytic_account_configurator_group`) — this is the
-  group guarding the **Cost Accounting > Account > Accounts** menu used to reach the
-  create form.
+- **Access:** User is in group _Analytic Account_
+  (`ssi_cost_accounting.account_analytic_account_configurator_group`).
 
-## Additional Fields
+## Flow
 
-When this module is installed, the create form and list gain the following fields, shown
-after the **Partner** field:
+1. Open the **Cost Accounting > Configuration > Account > Accounts** menu.
+2. Click the **New** button. **(14.0: "Create")**
+3. Fill in the fields:
+   - **Name** _(required)_: enter a name for the analytic account (e.g. "Project XYZ").
+   - **Reference**: an internal code for the account. Optional.
+   - **Customer**: link a partner to this account. Optional.
+   - **Start Date**: the date the analytic account becomes effective. Optional.
+   - **End Date**: the date the analytic account stops being effective. Optional.
+   - **Group**: classify the account under an Analytic Account Group. Optional.
+   - **Parent Analytic Account**: nest this account under another analytic account to
+     build a hierarchy. Optional. Selecting one also re-fills **Customer** above from
+     the parent's **Customer**, if the parent has one. Change if needed.
+4. On the header, note that the **State** status bar shows **Draft** — the default state
+   for a new record.
+5. In the **Hierarchy Balance** group, **Child Accounts Balance** and **Total Balance**
+   are shown read-only; both are automatically computed from posted analytic lines and
+   remain **0.00** until such lines exist.
+6. Click **Save**.
 
-- **Start Date**: The date the analytic account becomes effective. Optional.
-- **End Date**: The date the analytic account stops being effective. Optional.
-- **State**: Shown as a clickable status bar on the form (and as a plain column on the
-  list). One of **Draft**, **In Progress**, **Close**. Defaults to **Draft**. Since the
-  status bar is clickable, the user can change it directly from the form without a
-  dedicated confirm/approve button.
+## Post-Condition
 
-On the form, a new **Hierarchy Balance** group appears after the core **main** group
-with two read-only fields (also shown on the list, after the core **Balance** column):
-
-- **Child Accounts Balance**: The sum of the amount of every analytic line posted on all
-  descendant analytic accounts, excluding this account's own lines. Read-only,
-  automatically computed.
-- **Total Balance**: The sum of the amount of every analytic line posted on this account
-  and all its descendant analytic accounts. Read-only, automatically computed.
-
-## Additional Post-Condition
-
-- Once **State** is set to **Close**, the analytic account no longer appears in the
-  autocomplete suggestions of Many2one fields that point to `account.analytic.account`
-  anywhere in the system (e.g. the **Analytic Account** field on a journal item). It
-  remains visible in the Analytic Accounts list itself and in reports/searches — only
-  the Many2one autocomplete is filtered.
+- A new record is created with **State** set to **Draft**.
+- **Child Accounts Balance** and **Total Balance** reflect the sum of the amount of
+  every analytic line posted on this account and, once any exist, its descendant
+  accounts.
