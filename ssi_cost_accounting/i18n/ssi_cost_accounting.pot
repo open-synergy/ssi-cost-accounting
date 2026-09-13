@@ -141,6 +141,11 @@ msgid "Budget"
 msgstr ""
 
 #. module: ssi_cost_accounting
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_analytic_account__child_balance
+msgid "Child Accounts Balance"
+msgstr ""
+
+#. module: ssi_cost_accounting
 #: model:ir.model.fields.selection,name:ssi_cost_accounting.selection__account_analytic_account__state__done
 msgid "Close"
 msgstr ""
@@ -255,6 +260,11 @@ msgstr ""
 #. module: ssi_cost_accounting
 #: model:ir.ui.menu,name:ssi_cost_accounting.account_analytic_group_menu
 msgid "Groups"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model_terms:ir.ui.view,arch_db:ssi_cost_accounting.account_analytic_account_view_form
+msgid "Hierarchy Balance"
 msgstr ""
 
 #. module: ssi_cost_accounting
@@ -407,8 +417,29 @@ msgid "State"
 msgstr ""
 
 #. module: ssi_cost_accounting
+#: model:ir.model.fields,help:ssi_cost_accounting.field_account_analytic_account__child_balance
+msgid ""
+"Sum of the amount of every analytic line posted on all descendant analytic "
+"accounts, excluding this account's own lines. Computed directly from "
+"analytic lines so the total stays correct at any hierarchy depth."
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model:ir.model.fields,help:ssi_cost_accounting.field_account_analytic_account__total_balance
+msgid ""
+"Sum of the amount of every analytic line posted on this account and all its "
+"descendant analytic accounts. Computed directly from analytic lines so the "
+"total stays correct at any hierarchy depth."
+msgstr ""
+
+#. module: ssi_cost_accounting
 #: model:ir.ui.menu,name:ssi_cost_accounting.account_analytic_tag_menu
 msgid "Tags"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_analytic_account__total_balance
+msgid "Total Balance"
 msgstr ""
 
 #. module: ssi_cost_accounting
