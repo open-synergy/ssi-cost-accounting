@@ -64,6 +64,7 @@ msgid "Analytic Account Selection Method"
 msgstr ""
 
 #. module: ssi_cost_accounting
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_merge_analytic_account__analytic_account_ids
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_mixin_analytic_account_m2o_configurator__analytic_account_ids
 #: model_terms:ir.ui.view,arch_db:ssi_cost_accounting.analytic_account_m2o_configurator_template
 msgid "Analytic Accounts"
@@ -111,6 +112,20 @@ msgid "Analytic Tag"
 msgstr ""
 
 #. module: ssi_cost_accounting
+#: model:ir.model.fields,help:ssi_cost_accounting.field_merge_analytic_account__dst_analytic_account_id
+msgid ""
+"Analytic account the selected accounts are merged into. It must be one of "
+"the accounts listed above; its own field values are kept as-is."
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model:ir.model.fields,help:ssi_cost_accounting.field_merge_analytic_account__analytic_account_ids
+msgid ""
+"Analytic accounts to merge. At least two accounts are required; every record"
+" referencing one of them will be repointed at the destination account below."
+msgstr ""
+
+#. module: ssi_cost_accounting
 #: code:addons/ssi_cost_accounting/models/account_move_line.py:0
 #, python-format
 msgid ""
@@ -138,6 +153,11 @@ msgstr ""
 #: model:ir.ui.menu,name:ssi_cost_accounting.menu_budget_configuration
 #: model:ir.ui.menu,name:ssi_cost_accounting.menu_root_budget
 msgid "Budget"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model_terms:ir.ui.view,arch_db:ssi_cost_accounting.merge_analytic_account_view_form
+msgid "Cancel"
 msgstr ""
 
 #. module: ssi_cost_accounting
@@ -206,6 +226,16 @@ msgid "Cost Accounting Settings"
 msgstr ""
 
 #. module: ssi_cost_accounting
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_merge_analytic_account__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_merge_analytic_account__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: ssi_cost_accounting
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_analytic_account__date_end
 msgid "Date End"
 msgstr ""
@@ -213,6 +243,11 @@ msgstr ""
 #. module: ssi_cost_accounting
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_analytic_account__date_start
 msgid "Date Start"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_merge_analytic_account__dst_analytic_account_id
+msgid "Destination Account"
 msgstr ""
 
 #. module: ssi_cost_accounting
@@ -226,6 +261,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_analytic_group__display_name
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_move__display_name
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_move_line__display_name
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_merge_analytic_account__display_name
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_mixin_analytic_account_m2o_configurator__display_name
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_mixin_analytic_group_m2o_configurator__display_name
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_res_company__display_name
@@ -273,6 +309,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_analytic_group__id
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_move__id
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_move_line__id
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_merge_analytic_account__id
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_mixin_analytic_account_m2o_configurator__id
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_mixin_analytic_group_m2o_configurator__id
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_res_company__id
@@ -307,11 +344,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_analytic_group____last_update
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_move____last_update
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_account_move_line____last_update
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_merge_analytic_account____last_update
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_mixin_analytic_account_m2o_configurator____last_update
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_mixin_analytic_group_m2o_configurator____last_update
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_res_company____last_update
 #: model:ir.model.fields,field_description:ssi_cost_accounting.field_res_config_settings____last_update
 msgid "Last Modified on"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_merge_analytic_account__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model:ir.model.fields,field_description:ssi_cost_accounting.field_merge_analytic_account__write_date
+msgid "Last Updated on"
 msgstr ""
 
 #. module: ssi_cost_accounting
@@ -330,6 +378,23 @@ msgstr ""
 #: model:ir.model.fields.selection,name:ssi_cost_accounting.selection__mixin_analytic_account_m2o_configurator__analytic_account_selection_method__manual
 #: model:ir.model.fields.selection,name:ssi_cost_accounting.selection__mixin_analytic_group_m2o_configurator__analytic_group_selection_method__manual
 msgid "Manual"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model_terms:ir.ui.view,arch_db:ssi_cost_accounting.merge_analytic_account_view_form
+msgid "Merge"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: model:ir.actions.act_window,name:ssi_cost_accounting.merge_analytic_account_action
+#: model:ir.model,name:ssi_cost_accounting.model_merge_analytic_account
+msgid "Merge Analytic Accounts"
+msgstr ""
+
+#. module: ssi_cost_accounting
+#: code:addons/ssi_cost_accounting/wizards/merge_analytic_account.py:0
+#, python-format
+msgid "Merged analytic account(s): %s"
 msgstr ""
 
 #. module: ssi_cost_accounting
