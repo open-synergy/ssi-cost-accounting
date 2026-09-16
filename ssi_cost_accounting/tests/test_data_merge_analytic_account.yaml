@@ -1,0 +1,239 @@
+scenarios:
+  - name: "Merge moves references and deletes the source account"
+    steps:
+      - step: "Create source account A"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_a"
+        values:
+          name: "Merge Source A"
+      - step: "Create destination account B"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_b"
+        values:
+          name: "Merge Destination B"
+      - step: "Create child account C under A"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_c"
+        values:
+          name: "Merge Untouched Child C"
+          parent_id: "REC: account_a.id"
+      - step: "Post an analytic line on A"
+        action: "create"
+        model: "account.analytic.line"
+        save_as: "line_a"
+        values:
+          name: "Line on A"
+          account_id: "REC: account_a.id"
+          amount: 100.0
+      - step: "Select A and B for the merge"
+        action: "search"
+        model: "account.analytic.account"
+        domain: [["id", "in", ["REC: account_a.id", "REC: account_b.id"]]]
+        save_as: "accounts_to_merge"
+        expect_count: 2
+      - step: "Merge A into B"
+        action: "wizard"
+        model: "merge_analytic_account"
+        target: "accounts_to_merge"
+        values:
+          analytic_account_ids: "REC: accounts_to_merge"
+          dst_analytic_account_id: "REC: account_b"
+        method: "action_merge"
+      - step: "The analytic line now points at B"
+        action: "assert"
+        target: "line_a"
+        asserts:
+          account_id:
+            type: "m2o"
+            expected: "REC: account_b"
+      - step: "The untouched child C now points at B"
+        action: "assert"
+        target: "account_c"
+        asserts:
+          parent_id:
+            type: "m2o"
+            expected: "REC: account_b"
+      - step: "Account A no longer exists"
+        action: "search"
+        model: "account.analytic.account"
+        domain: [["id", "=", "REC: account_a.id"]]
+        save_as: "account_a_after_merge"
+        expect_count: 0
+
+  - name: "Merge moves the chatter message to the destination"
+    steps:
+      - step: "Create source account A"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_a"
+        values:
+          name: "Chatter Source A"
+      - step: "Create destination account B"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_b"
+        values:
+          name: "Chatter Destination B"
+      - step: "Post a message with a unique body on A"
+        action: "call"
+        target: "account_a"
+        method: "message_post"
+        kwargs:
+          body: "Merge tour uniqueyxz marker message"
+      - step: "Select A and B for the merge"
+        action: "search"
+        model: "account.analytic.account"
+        domain: [["id", "in", ["REC: account_a.id", "REC: account_b.id"]]]
+        save_as: "accounts_to_merge"
+      - step: "Merge A into B"
+        action: "wizard"
+        model: "merge_analytic_account"
+        target: "accounts_to_merge"
+        values:
+          analytic_account_ids: "REC: accounts_to_merge"
+          dst_analytic_account_id: "REC: account_b"
+        method: "action_merge"
+      - step: "The message is now attached to B"
+        action: "search"
+        model: "mail.message"
+        domain:
+          - ["model", "=", "account.analytic.account"]
+          - ["res_id", "=", "REC: account_b.id"]
+          - ["body", "ilike", "Merge tour uniqueyxz marker message"]
+        save_as: "moved_message"
+        expect_count: 1
+
+  - name: "Merge deduplicates a follower already present on the destination"
+    steps:
+      - step: "Create source account A"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_a"
+        values:
+          name: "Followers Source A"
+      - step: "Create destination account B"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_b"
+        values:
+          name: "Followers Destination B"
+      - step: "Select A and B for the merge"
+        action: "search"
+        model: "account.analytic.account"
+        domain: [["id", "in", ["REC: account_a.id", "REC: account_b.id"]]]
+        save_as: "accounts_to_merge"
+      - step: "Merge A into B"
+        # Both A and B were just created by the current user, so
+        # mail.thread.create() already subscribed that user's
+        # partner as a follower of both (odoo/addons/mail/models/
+        # mail_thread.py:265-273). Moving A's follower row onto B
+        # therefore hits mail.followers' unique(res_model, res_id,
+        # partner_id) constraint, exercising the delete-on-conflict
+        # branch instead of a plain UPDATE.
+        action: "wizard"
+        model: "merge_analytic_account"
+        target: "accounts_to_merge"
+        values:
+          analytic_account_ids: "REC: accounts_to_merge"
+          dst_analytic_account_id: "REC: account_b"
+        method: "action_merge"
+      - step: "B keeps exactly one follower row for that partner"
+        action: "search"
+        model: "mail.followers"
+        domain:
+          - ["res_model", "=", "account.analytic.account"]
+          - ["res_id", "=", "REC: account_b.id"]
+          - ["partner_id", "=", "REC: user.partner_id.id"]
+        save_as: "dst_followers"
+        expect_count: 1
+
+  - name: "Merge rejects a selection with fewer than 2 accounts"
+    steps:
+      - step: "Create a lone account"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_a"
+        values:
+          name: "Lone Account"
+      - step: "Merge with a single account selected"
+        action: "wizard"
+        model: "merge_analytic_account"
+        target: "account_a"
+        values:
+          analytic_account_ids: "REC: account_a"
+          dst_analytic_account_id: "REC: account_a"
+        method: "action_merge"
+        expect_error:
+          type: "UserError"
+
+  - name: "Merge rejects accounts belonging to different companies"
+    steps:
+      - step: "Create a second company"
+        action: "create"
+        model: "res.company"
+        save_as: "company_2"
+        values:
+          name: "Merge Test Second Company"
+      - step: "Create account A on the main company"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_a"
+        values:
+          name: "Company Mismatch A"
+          company_id: "REC: company.id"
+      - step: "Create account B on the second company"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_b"
+        values:
+          name: "Company Mismatch B"
+          company_id: "REC: company_2.id"
+      - step: "Select A and B for the merge"
+        action: "search"
+        model: "account.analytic.account"
+        domain: [["id", "in", ["REC: account_a.id", "REC: account_b.id"]]]
+        save_as: "accounts_to_merge"
+      - step: "Merge across companies is rejected"
+        action: "wizard"
+        model: "merge_analytic_account"
+        target: "accounts_to_merge"
+        values:
+          analytic_account_ids: "REC: accounts_to_merge"
+          dst_analytic_account_id: "REC: account_a"
+        method: "action_merge"
+        expect_error:
+          type: "UserError"
+
+  - name: "Merge rejects a parent selected together with its child"
+    steps:
+      - step: "Create parent account A"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_a"
+        values:
+          name: "Parent-Child A"
+      - step: "Create child account C under A"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "account_c"
+        values:
+          name: "Parent-Child C"
+          parent_id: "REC: account_a.id"
+      - step: "Select A and C for the merge"
+        action: "search"
+        model: "account.analytic.account"
+        domain: [["id", "in", ["REC: account_a.id", "REC: account_c.id"]]]
+        save_as: "accounts_to_merge"
+      - step: "Merging a parent with its own child is rejected"
+        action: "wizard"
+        model: "merge_analytic_account"
+        target: "accounts_to_merge"
+        values:
+          analytic_account_ids: "REC: accounts_to_merge"
+          dst_analytic_account_id: "REC: account_a"
+        method: "action_merge"
+        expect_error:
+          type: "UserError"

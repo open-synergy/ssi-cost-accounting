@@ -20,6 +20,7 @@
     "data": [
         "security/ir_module_category_data.xml",
         "security/res_group_data.xml",
+        "security/ir_model_access/merge_analytic_account.xml",
         "menu.xml",
         "templates/analytic_account_m2o_configurator_templates.xml",
         "templates/analytic_group_m2o_configurator_templates.xml",
@@ -29,6 +30,7 @@
         "views/account_analytic_tag_views.xml",
         "views/account_account_views.xml",
         "views/assets.xml",
+        "wizards/merge_analytic_account.xml",
     ],
     "demo": [],
 }
