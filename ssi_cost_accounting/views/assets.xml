@@ -19,6 +19,10 @@
             />
         <script
                 type="text/javascript"
+                src="/ssi_cost_accounting/static/tests/tours/account_analytic_account_merge_tour.js"
+            />
+        <script
+                type="text/javascript"
                 src="/ssi_cost_accounting/static/tests/tours/account_analytic_group_tour.js"
             />
         <script
